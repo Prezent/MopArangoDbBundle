@@ -4,6 +4,7 @@ namespace Mop\ArangoDbBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use triagens\ArangoDb\ConnectionOptions;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
@@ -27,8 +28,34 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
-                            ->scalarNode('host')->end()
-                            ->scalarNode('port')->end()
+                            ->stringNode(ConnectionOptions::OPTION_ENDPOINT)->end()
+                            ->stringNode(ConnectionOptions::OPTION_HOST)->end()
+                            ->integerNode(ConnectionOptions::OPTION_PORT)->end()
+                            ->integerNode(ConnectionOptions::OPTION_TIMEOUT)->end()
+                            ->booleanNode(ConnectionOptions::OPTION_CREATE)->end()
+                            ->scalarNode(ConnectionOptions::OPTION_REVISION)->end()
+                            ->stringNode(ConnectionOptions::OPTION_UPDATE_POLICY)->end()
+                            ->booleanNode(ConnectionOptions::OPTION_UPDATE_KEEPNULL)->end()
+                            ->stringNode(ConnectionOptions::OPTION_REPLACE_POLICY)->end()
+                            ->stringNode(ConnectionOptions::OPTION_DELETE_POLICY)->end()
+                            ->booleanNode(ConnectionOptions::OPTION_WAIT_SYNC)->end()
+                            ->scalarNode(ConnectionOptions::OPTION_LIMIT)->end()
+                            ->scalarNode(ConnectionOptions::OPTION_SKIP)->end()
+                            ->scalarNode(ConnectionOptions::OPTION_BATCHSIZE)->end()
+                            ->integerNode(ConnectionOptions::OPTION_JOURNAL_SIZE)->end()
+                            ->booleanNode(ConnectionOptions::OPTION_IS_SYSTEM)->end()
+                            ->booleanNode(ConnectionOptions::OPTION_IS_VOLATILE)->end()
+                            ->stringNode(ConnectionOptions::OPTION_AUTH_USER)->end()
+                            ->stringNode(ConnectionOptions::OPTION_AUTH_PASSWD)->end()
+                            ->scalarNode(ConnectionOptions::OPTION_AUTH_TYPE)->end()
+                            ->stringNode(ConnectionOptions::OPTION_CONNECTION)->end()
+                            ->booleanNode(ConnectionOptions::OPTION_RECONNECT)->end()
+                            ->booleanNode(ConnectionOptions::OPTION_BATCH)->end()
+                            ->booleanNode(ConnectionOptions::OPTION_BATCHPART)->end()
+                            ->stringNode(ConnectionOptions::OPTION_DATABASE)->end()
+                            ->booleanNode(ConnectionOptions::OPTION_CHECK_UTF8_CONFORM)->end()
+                            ->stringNode(ConnectionOptions::OPTION_CUSTOM_QUEUE)->end()
+                            ->integerNode(ConnectionOptions::OPTION_CUSTOM_QUEUE_COUNT)->end()
                         ->end()
                     ->end()
                 ->end()
