@@ -35,15 +35,13 @@ class MopArangoDbExtension extends Extension
             }
             $loader->load('connection.xml');
             foreach ($config['connections'] as $name => $connection) {
-                $arguments = array_merge(array($name), array_values($connection));
-                
                 $logger = new Reference('mop_arangodb.data_collector');
                 if (true === $container->getParameter('kernel.debug')) {
                     $container->getDefinition('mop_arangodb.connection_factory')->addMethodCall('addLogger', array($logger));
                 }
                 $container
                     ->setDefinition('mop_arangodb.connections.'.$name, new DefinitionDecorator('mop_arangodb.connection'))
-                    ->setArguments($arguments);
+                    ->setArguments($name, $connection);
             }
         }
 
