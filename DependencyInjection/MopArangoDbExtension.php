@@ -41,7 +41,7 @@ class MopArangoDbExtension extends Extension
                 }
                 $container
                     ->setDefinition('mop_arangodb.connections.'.$name, new DefinitionDecorator('mop_arangodb.connection'))
-                    ->setArguments($name, $connection);
+                    ->setArguments(array($name, $connection));
             }
         }
 
