@@ -54,8 +54,6 @@ class Configuration implements ConfigurationInterface
                             ->booleanNode(ConnectionOptions::OPTION_BATCHPART)->end()
                             ->scalarNode(ConnectionOptions::OPTION_DATABASE)->end()
                             ->booleanNode(ConnectionOptions::OPTION_CHECK_UTF8_CONFORM)->end()
-                            ->scalarNode(ConnectionOptions::OPTION_CUSTOM_QUEUE)->end()
-                            ->integerNode(ConnectionOptions::OPTION_CUSTOM_QUEUE_COUNT)->end()
                         ->end()
                     ->end()
                 ->end()
