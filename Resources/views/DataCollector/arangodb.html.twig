@@ -1,32 +1,34 @@
 {% extends app.request.isXmlHttpRequest ? 'WebProfilerBundle:Profiler:ajax_layout.html.twig' : 'WebProfilerBundle:Profiler:layout.html.twig' %}
 
 {% block toolbar %}
-    {% set icon %}
-        <img width="24" height="24" alt="ArangoDb" style="border-width: 0; vertical-align: middle; margin-right: 5px;" src=" data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QEMCCscChgEEQAAA+ZJREFUSMftlU9Im3cYxz+/3/svSswfXxKzmCjECf0jaamU0sHAUlpp7bDQMFwRdhg7DcYuuwxGGezQ2y67DcZuZSxjQguzoCfXg1R7EsFNYrBtUoNhMdpE3zfv+9thXdC2rt1thz7X59/v+X6f5/uDN/YKE68bOD4+HjMMY9Q0zetSypOapkmlVEEpNd1oNH6qVCq/z83Nec/n6a9T/OrVq5+EQqEbyWQylkgkCIfDaJqG7/s9T58+PVsqlb60LOsucOU/N7h27dqHiUTi26GhIWzbBkAp1fZ3dHQQj8f1SCQy5vt+aWdn5+07d+40/vHLV7x8wLbtH4aHh4nH40gpkVKi6zqtVgulFEIIfN+nv7+f4eHhtzo7O3/ZX0P7twZDQ0N3s9lsb0dHB+VymXK5zJMnT3j48CHlcplarYZhGAQCAQAikQiO4wwkEglneXn5t5eSPDY2diaTyYw2m82zlUrlQqvV0kKhEKdPn6a3txff9/F9n1qtRqFQIBwOk0wmCYfDKKVwXZe5uTlKpdKF27dvz+gAk5OTQkr5TjQazafT6USxWOT+/fvo+t8UbWxssLKywvj4OMePH8f3fXp6etjb22Nzc5NSqUQwGERKiWmanDp1iu3t7a+AGW1iYiIYj8d/HhwcvHns2LHg1tYW09PTSHmQHiEES0tLpFIpotEoQgjq9Tr1eh3TNLEsC8uy2sTX6/V0Mpn8Xtq2fePo0aNX+vr6sCyL2dnZA1uy30zT5MGDByilUEqxtrbWLro/RylFKpUC+FRGIpHJUCiEUgrf9ykWiwjx8vtrtVrYto2Ukmq1SrVaxTRNNE2jq6vrQGw0GkXTtAkppTxwC+fOnXvpBK1WixMnTnD+/Hkcx2F+fp5MJoNt2wwMDLwA6bPtSumNRmPR87xRKSWe53Hx4kWy2SxLS0tsbW0BEAwGOXLkCP39/Tx+/JjFxUWUUmSz2Rfg2Q+Truvo1Wr11vr6+ujg4CC+7+O6LrZtMzIy0k6UUtJsNrl37x7r6+t4nselS5cO5QrAdV0cx1FaOp2ubG9vf+y6rhUIBJBStvnY29ujVquxurrKwsICm5ubCCGapmn+oZSKBQIBDMNA07Q2b0IIlFIUCgUePXp0UzzTm8+klN9omoau6xiGgVIKx3HwPA/POyCS7yulfhVCnNF1/VYsFotlMhm6u7sRQtBsNikWixSLxXnXdd9tr0sul/sc+AKIHDL1n8D1fD4//ZyM5wzD+CgYDKallGaj0ajv7u5OTU1Nff2CVORyuSTwHvABcBKwgFXgR+C7fD6/cRjmly9f7pRSGru7uzszMzPem6/2/2N/AdxVn5Eb8zecAAAAAElFTkSuQmCC"/>
-        <span class="sf-toolbar-value">{{ collector.interactionscount }}</span>
-    {% endset %}
-    {% set text %}
-        <div class="sf-toolbar-info-piece">
-            <b>DB Requests</b>
-            <span class="sf-toolbar-status">{{ collector.interactionscount }}</span>
-        </div>
-        <div class="sf-toolbar-info-piece">
-            <b>Request time</b>
-            <span>{{ '%0.2f'|format(collector.totaltime) }} ms</span>
-        </div>
-    {% endset %}
-    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
+    {% if collector.interactions is not empty %}
+        {% set icon %}
+            <img width="24" height="24" alt="ArangoDb" src=" data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QEMCCscChgEEQAAA+ZJREFUSMftlU9Im3cYxz+/3/svSswfXxKzmCjECf0jaamU0sHAUlpp7bDQMFwRdhg7DcYuuwxGGezQ2y67DcZuZSxjQguzoCfXg1R7EsFNYrBtUoNhMdpE3zfv+9thXdC2rt1thz7X59/v+X6f5/uDN/YKE68bOD4+HjMMY9Q0zetSypOapkmlVEEpNd1oNH6qVCq/z83Nec/n6a9T/OrVq5+EQqEbyWQylkgkCIfDaJqG7/s9T58+PVsqlb60LOsucOU/N7h27dqHiUTi26GhIWzbBkAp1fZ3dHQQj8f1SCQy5vt+aWdn5+07d+40/vHLV7x8wLbtH4aHh4nH40gpkVKi6zqtVgulFEIIfN+nv7+f4eHhtzo7O3/ZX0P7twZDQ0N3s9lsb0dHB+VymXK5zJMnT3j48CHlcplarYZhGAQCAQAikQiO4wwkEglneXn5t5eSPDY2diaTyYw2m82zlUrlQqvV0kKhEKdPn6a3txff9/F9n1qtRqFQIBwOk0wmCYfDKKVwXZe5uTlKpdKF27dvz+gAk5OTQkr5TjQazafT6USxWOT+/fvo+t8UbWxssLKywvj4OMePH8f3fXp6etjb22Nzc5NSqUQwGERKiWmanDp1iu3t7a+AGW1iYiIYj8d/HhwcvHns2LHg1tYW09PTSHmQHiEES0tLpFIpotEoQgjq9Tr1eh3TNLEsC8uy2sTX6/V0Mpn8Xtq2fePo0aNX+vr6sCyL2dnZA1uy30zT5MGDByilUEqxtrbWLro/RylFKpUC+FRGIpHJUCiEUgrf9ykWiwjx8vtrtVrYto2Ukmq1SrVaxTRNNE2jq6vrQGw0GkXTtAkppTxwC+fOnXvpBK1WixMnTnD+/Hkcx2F+fp5MJoNt2wwMDLwA6bPtSumNRmPR87xRKSWe53Hx4kWy2SxLS0tsbW0BEAwGOXLkCP39/Tx+/JjFxUWUUmSz2Rfg2Q+Truvo1Wr11vr6+ujg4CC+7+O6LrZtMzIy0k6UUtJsNrl37x7r6+t4nselS5cO5QrAdV0cx1FaOp2ubG9vf+y6rhUIBJBStvnY29ujVquxurrKwsICm5ubCCGapmn+oZSKBQIBDMNA07Q2b0IIlFIUCgUePXp0UzzTm8+klN9omoau6xiGgVIKx3HwPA/POyCS7yulfhVCnNF1/VYsFotlMhm6u7sRQtBsNikWixSLxXnXdd9tr0sul/sc+AKIHDL1n8D1fD4//ZyM5wzD+CgYDKallGaj0ajv7u5OTU1Nff2CVORyuSTwHvABcBKwgFXgR+C7fD6/cRjmly9f7pRSGru7uzszMzPem6/2/2N/AdxVn5Eb8zecAAAAAElFTkSuQmCC"/>
+            <span class="sf-toolbar-value">{{ collector.interactionscount }}</span>
+        {% endset %}
+        {% set text %}
+            <div class="sf-toolbar-info-piece">
+                <b>DB Requests</b>
+                <span class="sf-toolbar-status">{{ collector.interactionscount }}</span>
+            </div>
+            <div class="sf-toolbar-info-piece">
+                <b>Request time</b>
+                <span>{{ '%0.2f'|format(collector.totaltime) }} ms</span>
+            </div>
+        {% endset %}
+        {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
+    {% endif %}
 {% endblock %}
 
 {% block menu %}
-<span class="label">
-    <span class="icon"><img src="{{ asset('bundles/moparangodb/images/profiler/arangodb.png') }}" alt="" /></span>
-    <strong>ArangoDb</strong>
-    <span class="count">
-        <span>{{ collector.interactionscount }}</span>
-        <span>{{ '%0.0f'|format(collector.totaltime) }} ms</span>
+    <span class="label">
+        <span class="icon"><img src="{{ asset('bundles/moparangodb/images/profiler/arangodb.png') }}" alt="" /></span>
+        <strong>ArangoDb</strong>
+        <span class="count">
+            <span>{{ collector.interactionscount }}</span>
+            <span>{{ '%0.0f'|format(collector.totaltime) }} ms</span>
+        </span>
     </span>
-</span>
 {% endblock %}
 
 {% block panel %}
